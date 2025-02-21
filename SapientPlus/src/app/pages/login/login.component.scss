@@ -1,0 +1,161 @@
+section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-image: url("../../../assets/img/sfondo-login.webp");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.wel.gif-container {
+  margin-bottom: 10px;
+}
+
+.title {
+  color: rgba(0, 97, 100, 1) !important;
+  font-size: 2rem;
+}
+
+.gif-login {
+  width: 120px;
+  height: auto;
+  border-radius: 50%;
+  margin-bottom: 0.5rem;
+}
+
+come-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: rgba(0, 97, 100, 1) !important;
+}
+
+.custom-icon {
+  font-size: 16px !important;
+  color: rgba(0, 97, 100, 1) !important;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  width: 90%;
+  max-width: 400px;
+  opacity: 0;
+  transform: translateY(-30px);
+  animation: fadeInUp 1s ease-in-out forwards;
+}
+
+::ng-deep mat-label {
+  color: black;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.sign-up-link {
+  text-align: center;
+  margin-top: 1rem;
+
+  p {
+    font-size: 1rem;
+    color: #333;
+  }
+
+  a {
+    color: rgba(0, 97, 100, 1) !important;
+    font-weight: bold;
+    text-decoration: none;
+    transition: color 0.3s;
+
+    &:hover {
+      color: #01579b;
+    }
+  }
+}
+
+.login {
+  margin-top: 1rem;
+  font-size: 1.1rem;
+  font-weight: bold;
+  background-color: #0288d1;
+  color: white;
+  padding: 10px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: #01579b;
+    transform: scale(1.05);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.gif-container.password {
+  display: none;
+  text-align: center;
+  margin-bottom: 10px;
+  transition: opacity 0.3s ease-in-out, visibility 0.3s;
+}
+
+.gif-container.password.visible {
+  display: block;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.gif-container {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.3s ease-in-out, visibility 0.3s;
+  animation: fadeIn 0.3s ease-in-out;
+  transition: transform 10s ease-in-out;
+  transform: scaleX(-1);
+}
+
+.gif-container.hidden {
+  opacity: 0;
+  display: none;
+
+  .gif-container.password {
+    opacity: 0;
+    display: none;
+    transition: opacity 0.3s ease-in-out, visibility 0.3s;
+  }
+
+  .gif-container.password.visible {
+    opacity: 1;
+    visibility: visible;
+    animation: fadeIn 0.3s ease-in-out;
+  }
+}

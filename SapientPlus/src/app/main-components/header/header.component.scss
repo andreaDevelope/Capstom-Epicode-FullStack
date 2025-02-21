@@ -1,0 +1,22 @@
+nav {
+  ::ng-deep mat-tab-group {
+    background: #e0f7fa;
+
+    span.mdc-tab__text-label {
+      color: #08a7b7;
+      &:hover {
+        color: #035057;
+      }
+    }
+
+    .mdc-tab--active {
+      .mdc-tab-indicator__content--underline {
+        border-color: #035057 !important;
+      }
+
+      span.mdc-tab__text-label {
+        color: #035057 !important;
+      }
+    }
+  }
+}

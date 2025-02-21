@@ -1,0 +1,275 @@
+<button class="chiudi" mat-button (click)="closeDialog()">Chiudi</button>
+<div class="ruolo">
+  <mat-button-toggle-group
+    [formControl]="ruoloControl"
+    exclusive
+    aria-label="Ruolo"
+    class="ruolo-btn"
+  >
+    <mat-button-toggle
+      value="student"
+      class="rule"
+      [checked]="!isChecked"
+      (click)="toggleSelection('student')"
+      >Studente</mat-button-toggle
+    >
+    <mat-button-toggle
+      value="mentor"
+      class="rule"
+      [checked]="isChecked"
+      (click)="toggleSelection('student')"
+      >Mentor</mat-button-toggle
+    >
+  </mat-button-toggle-group>
+
+  <form [formGroup]="signupForm" (ngSubmit)="signup()">
+    <mat-form-field appearance="fill" class="w-100 mb-3">
+      <mat-label>Username</mat-label>
+      <input matInput formControlName="username" />
+      <mat-error *ngIf="signupForm.get('username')?.hasError('required')">
+        Username obbligatorio
+      </mat-error>
+      <mat-error *ngIf="signupForm.get('username')?.hasError('usernameInUse')">
+        Questo username è già in uso. Scegli un altro.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="w-100 mb-3">
+      <mat-label>Nome</mat-label>
+      <input matInput formControlName="nome" />
+      <mat-error *ngIf="signupForm.get('nome')?.hasError('required')">
+        Nome obbligatorio
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="w-100 mb-3">
+      <mat-label>Cognome</mat-label>
+      <input matInput formControlName="cognome" />
+      <mat-error *ngIf="signupForm.get('cognome')?.hasError('required')">
+        Cognome obbligatorio
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="w-100 mb-3">
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email" type="email" />
+      <mat-error *ngIf="signupForm.get('email')?.hasError('email')">
+        Email non valida
+      </mat-error>
+      <mat-error *ngIf="signupForm.get('email')?.hasError('required')">
+        Email obbligatoria.
+      </mat-error>
+      <mat-error *ngIf="signupForm.get('email')?.hasError('emailInUse')">
+        Questa email è già in uso. Scegli un'altra.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="w-100 mb-3">
+      <mat-label>Numero WhatsApp</mat-label>
+      <input matInput formControlName="whatsapp" type="tel" />
+      <mat-error *ngIf="signupForm.get('whatsapp')?.hasError('required')">
+        Il numero WhatsApp è obbligatorio.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="w-100 mb-3">
+      <mat-label>Password</mat-label>
+      <input
+        matInput
+        formControlName="password"
+        [type]="hidePassword ? 'password' : 'text'"
+      />
+      <button
+        mat-icon-button
+        matSuffix
+        (click)="hidePassword = !hidePassword"
+        [attr.aria-label]="'Mostra/Nascondi password'"
+        type="button"
+      >
+        <mat-icon class="custom-icon">{{
+          hidePassword ? "visibility_off" : "visibility"
+        }}</mat-icon>
+      </button>
+      <mat-error *ngIf="signupForm.get('password')?.hasError('pattern')">
+        password non valida
+      </mat-error>
+      <mat-error *ngIf="signupForm.get('password')?.hasError('required')">
+        La password è obbligatoria.
+      </mat-error>
+    </mat-form-field>
+
+    <p class="psw-legend">
+      Almeno 6 caratteri, una lettera maiuscola, <br />
+      un simbolo speciale e un numero.
+    </p>
+
+    <mat-form-field appearance="fill" class="w-100 mb-3">
+      <mat-label>Conferma Psw</mat-label>
+      <input
+        matInput
+        formControlName="confirmPassword"
+        [type]="hideConfirmPassword ? 'password' : 'text'"
+      />
+      <button
+        mat-icon-button
+        matSuffix
+        (click)="hideConfirmPassword = !hideConfirmPassword"
+        [attr.aria-label]="'Mostra/Nascondi conferma password'"
+        type="button"
+      >
+        <mat-icon class="custom-icon">{{
+          hideConfirmPassword ? "visibility_off" : "visibility"
+        }}</mat-icon>
+      </button>
+
+      <mat-error
+        *ngIf="
+          signupForm.get('confirmPassword')?.dirty &&
+          signupForm.get('confirmPassword')?.hasError('passwordsMismatch')
+        "
+      >
+        Le password non corrispondono.
+      </mat-error>
+
+      <mat-error
+        *ngIf="
+          signupForm.get('confirmPassword')?.hasError('required') &&
+          !signupForm.hasError('passwordsMismatch')
+        "
+      >
+        La conferma è obbligatoria.
+      </mat-error>
+    </mat-form-field>
+
+    <div formGroupName="fasciaOraria" *ngIf="isMentor">
+      <mat-form-field appearance="fill" class="w-100 mb-3 hour">
+        <mat-label>Fascia Oraria Inizio</mat-label>
+        <input matInput formControlName="start" type="time" />
+        <mat-error
+          *ngIf="signupForm.get('fasciaOraria.start')?.hasError('required')"
+        >
+          L'orario di inizio è obbligatorio.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill" class="w-100 mb-3 hour">
+        <mat-label>Fascia Oraria Fine</mat-label>
+        <input matInput formControlName="end" type="time" />
+        <mat-error
+          *ngIf="signupForm.get('fasciaOraria.end')?.hasError('required')"
+        >
+          L'orario di fine è obbligatorio.
+        </mat-error>
+      </mat-form-field>
+
+      <mat-error
+        *ngIf="signupForm.get('fasciaOraria')?.hasError('timeTooShort')"
+      >
+        <p class="differenza-orario">
+          La differenza tra orari deve essere di almeno 1 ora.
+        </p>
+      </mat-error>
+    </div>
+
+    <mat-form-field appearance="fill" class="w-100 mb-3" *ngIf="isMentor">
+      <mat-label>Seleziona Materie e Livelli</mat-label>
+      <mat-select (selectionChange)="onSelectMateria($event.value)">
+        <mat-option
+          *ngFor="let materia of materieDisponibili"
+          [value]="materia"
+        >
+          {{ materia.nome }} - Livello: {{ materia.livello }}
+        </mat-option>
+        <mat-option [value]="'altro'"> Altro </mat-option>
+      </mat-select>
+      <mat-error *ngIf="materieFormArray.hasError('requiredMaterie')">
+        Almeno una materia.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field
+      *ngIf="isMateriaCustom"
+      appearance="fill"
+      class="w-100 mb-3"
+    >
+      <mat-label>Nome della materia personalizzata</mat-label>
+      <input
+        matInput
+        formControlName="materiaCustomName"
+        placeholder="Es. Programmazione C++"
+      />
+    </mat-form-field>
+
+    <mat-form-field
+      *ngIf="isMateriaCustom"
+      appearance="fill"
+      class="w-100 mb-3"
+    >
+      <mat-label>Livello</mat-label>
+      <mat-select formControlName="materiaCustomLevel">
+        <mat-option *ngFor="let livello of livelliMaterie" [value]="livello">
+          {{ livello }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <button
+      *ngIf="isMateriaCustom"
+      mat-button
+      color="primary"
+      type="button"
+      (click)="confermaMateriaPersonalizzata()"
+    >
+      Aggiungi materia
+    </button>
+
+    <div *ngIf="isMentor" class="selected-materie">
+      <h3>Materie Selezionate</h3>
+      <table class="materie-table">
+        <thead>
+          <tr>
+            <th>Materia</th>
+            <th>Livello</th>
+            <th>Azioni</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let materia of materieFormArray.controls; let i = index">
+            <td>{{ materia.value.nome }}</td>
+            <td>{{ materia.value.livello }}</td>
+            <td>
+              <button mat-icon-button color="warn" (click)="removeMateria(i)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <mat-checkbox formControlName="sottoscrizioneAbbonamento" *ngIf="isMentor">
+      <p class="confermo">
+        Confermo la sottoscrizione <br />
+        all'abbonamento annuale (€20)
+      </p>
+    </mat-checkbox>
+    <mat-error
+      *ngIf="
+        signupForm.get('sottoscrizioneAbbonamento')?.hasError('required') &&
+        signupForm.get('sottoscrizioneAbbonamento')?.touched
+      "
+    >
+      Accettare l'abbonamento per continuare.
+    </mat-error>
+
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit"
+      class="w-100 signup"
+      [disabled]="signupForm.invalid"
+    >
+      Sign Up
+    </button>
+  </form>
+</div>

@@ -1,0 +1,132 @@
+<mat-sidenav-container
+  class="sidenav-container"
+  [ngClass]="{ 'dark-mode-bg': isDarkMode }"
+>
+  <mat-sidenav #sidenav mode="side" opened class="sidenav">
+    <mat-toolbar color="primary" style="background-color: #006064">
+      <h3 style="color: #e0f7fa">Sapient+</h3>
+    </mat-toolbar>
+    <mat-nav-list>
+      <button mat-list-item routerLink="/mentor-home">
+        <mat-icon>home</mat-icon> Home
+      </button>
+      <button mat-list-item routerLink="/settings">
+        <mat-icon>settings</mat-icon> Impostazioni
+      </button>
+      <button mat-list-item (click)="logout()">
+        <mat-icon>logout</mat-icon> Logout
+      </button>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content class="content">
+    <mat-toolbar color="primary" id="header">
+      <button mat-icon-button (click)="sidenav.toggle()">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span class="title">Profilo</span>
+      <div class="avatar-container" *ngIf="mentor.avatarPath">
+        <img src="{{ mentor.avatarPath }}" alt="user-avatar" />
+      </div>
+    </mat-toolbar>
+
+    <div class="profile-container" [ngClass]="{ 'dark-mode-bg2': isDarkMode }">
+      <div class="avatar-section">
+        <img [src]="mentor?.avatarPath" alt="Avatar" class="avatar" />
+      </div>
+
+      <div class="info-section">
+        <h2>{{ mentor?.nome }} {{ mentor?.cognome }}</h2>
+        <p class="username">{{ formattedUsername }}</p>
+
+        <div class="editable-field">
+          <h3>Bio</h3>
+          <p *ngIf="editingField !== 'bio'" (click)="enableEditing('bio')">
+            {{ getFormattedValue(mentor?.bio) }}
+          </p>
+          <input
+            *ngIf="editingField === 'bio'"
+            [(ngModel)]="mentor.bio"
+            (blur)="saveField('bio', mentor.bio)"
+          />
+        </div>
+
+        <div class="editable-field">
+          <h3>Specializzazione</h3>
+          <p
+            *ngIf="editingField !== 'specializzazione'"
+            (click)="enableEditing('specializzazione')"
+          >
+            {{ getFormattedValue(mentor?.specializzazione) }}
+          </p>
+          <input
+            *ngIf="editingField === 'specializzazione'"
+            [(ngModel)]="mentor.specializzazione"
+            (blur)="saveField('specializzazione', mentor.specializzazione)"
+          />
+        </div>
+
+        <div class="editable-field">
+          <h3>Esperienza</h3>
+          <p
+            *ngIf="editingField !== 'esperienza'"
+            (click)="enableEditing('esperienza')"
+          >
+            {{ getFormattedValue(mentor?.esperienza) }}
+          </p>
+          <input
+            *ngIf="editingField === 'esperienza'"
+            [(ngModel)]="mentor.esperienza"
+            (blur)="saveField('esperienza', mentor.esperienza)"
+          />
+        </div>
+
+        <div class="editable-field">
+          <h3>Tariffa</h3>
+          <p
+            *ngIf="editingField !== 'compensoPerOra'"
+            (click)="enableEditing('compensoPerOra')"
+          >
+            {{ getFormattedTariffa(mentor?.compensoPerOra) }}
+          </p>
+          <input
+            type="number"
+            *ngIf="editingField === 'compensoPerOra'"
+            [(ngModel)]="mentor.compensoPerOra"
+            (blur)="saveField('compensoPerOra', mentor.compensoPerOra)"
+          />
+        </div>
+
+        <div class="editable-field">
+          <h3>LinkedIn</h3>
+          <p
+            *ngIf="editingField !== 'linkedin'"
+            (click)="enableEditing('linkedin')"
+          >
+            {{ getFormattedValue(mentor?.linkedin) }}
+          </p>
+          <input
+            *ngIf="editingField === 'linkedin'"
+            [(ngModel)]="mentor.linkedin"
+            (blur)="saveField('linkedin', mentor.linkedin)"
+          />
+        </div>
+
+        <div class="editable-field">
+          <h3>Website</h3>
+          <p
+            *ngIf="editingField !== 'website'"
+            (click)="enableEditing('website')"
+          >
+            {{ getFormattedValue(mentor?.website) }}
+          </p>
+          <input
+            *ngIf="editingField === 'website'"
+            [(ngModel)]="mentor.website"
+            (blur)="saveField('website', mentor.website)"
+          />
+        </div>
+      </div>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

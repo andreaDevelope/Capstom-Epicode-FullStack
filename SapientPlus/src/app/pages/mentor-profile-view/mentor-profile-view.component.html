@@ -1,0 +1,111 @@
+<mat-sidenav-container
+  class="sidenav-container"
+  [ngClass]="{ 'dark-mode-bg': isDarkMode }"
+>
+  <mat-sidenav #sidenav mode="side" opened class="sidenav">
+    <mat-toolbar color="primary" style="background-color: #006064">
+      <h3 style="color: #e0f7fa">Sapient+</h3>
+    </mat-toolbar>
+    <mat-nav-list>
+      <button mat-list-item routerLink="/mentor-home">
+        <mat-icon>home</mat-icon> Home
+      </button>
+      <button mat-list-item routerLink="/settings">
+        <mat-icon>settings</mat-icon> Impostazioni
+      </button>
+      <button mat-list-item (click)="logout()">
+        <mat-icon>logout</mat-icon> Logout
+      </button>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content class="content">
+    <mat-toolbar color="primary" id="header">
+      <button mat-icon-button (click)="sidenav.toggle()">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span class="title">Profilo {{ mentor?.username }}</span>
+      <div class="avatar-container" *ngIf="mentorProfile?.avatarPath">
+        <img src="{{ mentorProfile?.avatarPath }}" alt="user-avatar" />
+      </div>
+    </mat-toolbar>
+
+    <div class="profile-container" [ngClass]="{ 'dark-mode-bg2': isDarkMode }">
+      <div class="avatar-section">
+        <img [src]="mentor?.avatar.path" alt="Avatar" class="avatar" />
+      </div>
+
+      <div class="info-section">
+        <h2>{{ mentor?.nome }} {{ mentor?.cognome }}</h2>
+        <p class="username">{{ "@" + mentor?.username }}</p>
+
+        <div class="field">
+          <h3>Bio</h3>
+          <p>{{ mentorProfile?.bio }}</p>
+        </div>
+
+        <div class="field" *ngIf="mentorProfile?.specializzazione">
+          <h3>Specializzazione</h3>
+          <p>{{ mentorProfile?.specializzazione }}</p>
+        </div>
+
+        <div class="field" *ngIf="!mentorProfile?.specializzazione">
+          <h3>Specializzazione</h3>
+          <p>non specificata</p>
+        </div>
+
+        <div class="field" *ngIf="mentorProfile?.esperienza">
+          <h3>Esperienza</h3>
+          <p>{{ mentorProfile?.esperienza }}</p>
+        </div>
+
+        <div class="field" *ngIf="!mentorProfile?.esperienza">
+          <h3>Esperienza</h3>
+          <p>non specificato</p>
+        </div>
+
+        <div class="field" *ngIf="mentorProfile">
+          <h3>Tariffa</h3>
+          <p
+            *ngIf="
+              mentorProfile.compensoPerOra && mentorProfile.compensoPerOra > 0
+            "
+          >
+            {{ mentorProfile.compensoPerOra }} € / ora
+          </p>
+          <p
+            *ngIf="
+              !mentorProfile.compensoPerOra || mentorProfile.compensoPerOra < 1
+            "
+          >
+            Non specificato
+          </p>
+        </div>
+
+        <div class="field" *ngIf="mentorProfile?.linkedin">
+          <h3>LinkedIn</h3>
+          <a [href]="mentorProfile?.linkedin" target="_blank">{{
+            mentorProfile?.linkedin
+          }}</a>
+        </div>
+
+        <div class="field" *ngIf="!mentorProfile?.linkedin">
+          <h3>LinkedIn</h3>
+          <p>non specificato</p>
+        </div>
+
+        <div class="field" *ngIf="mentorProfile?.website">
+          <h3>Website</h3>
+          <a [href]="mentorProfile?.website" target="_blank">{{
+            mentorProfile?.website
+          }}</a>
+        </div>
+
+        <div class="field" *ngIf="!mentorProfile?.website">
+          <h3>Website</h3>
+          <p>non specificato</p>
+        </div>
+      </div>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

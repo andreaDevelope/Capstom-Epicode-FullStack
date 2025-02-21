@@ -1,0 +1,18 @@
+<div class="verify-email-container">
+  <h1>SapientPlus</h1>
+
+  <img width="600px" src="../../../assets/img/mail.gif" alt="gif-mail" />
+  <h2>
+    ti abbiamo inviato una email, clicka sul link per continuare la tua
+    registrazione
+  </h2>
+  <button
+    class="animated-button"
+    *ngIf="isError"
+    mat-raised-button
+    color="primary"
+    routerLink="/login"
+  >
+    Torna al login
+  </button>
+</div>

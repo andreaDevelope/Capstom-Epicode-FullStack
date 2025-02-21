@@ -1,0 +1,332 @@
+<mat-sidenav-container
+  class="sidenav-container"
+  [ngClass]="{ 'dark-mode-bg': isDarkMode }"
+>
+  <mat-sidenav #sidenav mode="side" opened class="sidenav">
+    <mat-toolbar color="primary" style="background-color: #006064">
+      <h3 style="color: #e0f7fa">Sapient+</h3>
+    </mat-toolbar>
+    <mat-nav-list>
+      <button mat-list-item routerLink="/mentor-profile">
+        <mat-icon>person</mat-icon> Profilo
+      </button>
+      <button mat-list-item routerLink="/settings">
+        <mat-icon>settings</mat-icon> Impostazioni
+      </button>
+      <button mat-list-item (click)="logout()">
+        <mat-icon>logout</mat-icon> Logout
+      </button>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content class="content">
+    <mat-toolbar color="primary" id="header">
+      <button mat-icon-button (click)="sidenav.toggle()">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span class="title">Home</span>
+      <button
+        mat-icon-button
+        (click)="markNotificationsAsRead()"
+        #notificationButton
+        [matMenuTriggerFor]="notificationsMenu"
+      >
+        <div class="notification-container" (click)="markNotificationsAsRead()">
+          <mat-icon class="notification-icon">notifications</mat-icon>
+          <div class="notification-badge" *ngIf="unreadCount > 0">
+            {{ unreadCount }}
+          </div>
+        </div>
+      </button>
+
+      <mat-menu #notificationsMenu="matMenu">
+        <div *ngFor="let notifica of notifications" class="notification-item">
+          <button mat-menu-item>
+            <mat-icon color="primary" style="color: #006064"
+              >notification_important</mat-icon
+            >
+            <span>{{ notifica.content }}</span>
+          </button>
+          <div class="whatsapp">
+            <a
+              mat-button
+              style="color: #006064"
+              *ngIf="notifica && notifica.whatsapp"
+              [href]="
+                'https://wa.me/' +
+                notifica.whatsapp +
+                '?text=Ciao%20' +
+                user.nome +
+                ',%20sono%20interessato%20alle%20tue%20lezioni!'
+              "
+              target="_blank"
+            >
+              <img
+                src="https://1.bp.blogspot.com/-pGsRrouvWAI/XkVHyz-xkyI/AAAAAAAAJcg/BLkwzlGjYjg2ekiWS1EXifycdnFoZbXggCLcBGAsYHQ/s1600/Whatsapp%2BIcon%2BLogo.png"
+                alt=""
+                class="whatsapp-logo"
+                width="20px"
+              />
+            </a>
+          </div>
+        </div>
+      </mat-menu>
+
+      <div class="avatar-container" *ngIf="user.avatar.path">
+        <img src="{{ user.avatar.path }}" alt="user-avatar" />
+      </div>
+    </mat-toolbar>
+
+    <div class="profile-container" [ngClass]="{ 'dark-mode-bg2': isDarkMode }">
+      <h2 id="primo-h2">Profilo</h2>
+      <button
+        mat-raised-button
+        color="primary"
+        class="custom-button"
+        (click)="update()"
+        *ngIf="isUpdate"
+      >
+        <mat-icon>check_circle</mat-icon> Nascondi
+      </button>
+
+      <button
+        mat-raised-button
+        color="primary"
+        class="custom-button"
+        (click)="update()"
+        *ngIf="!isUpdate"
+      >
+        <mat-icon>check_circle</mat-icon> Mostra
+      </button>
+
+      <ng-container *ngIf="isUpdate">
+        <form *ngIf="profileForm" [formGroup]="profileForm">
+          <mat-form-field appearance="fill">
+            <mat-label>Username</mat-label>
+            <input matInput formControlName="username" />
+            <mat-error *ngIf="profileForm.get('username')?.hasError('unique')">
+              {{ usernameError }}
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Password</mat-label>
+            <input matInput type="password" formControlName="password" />
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Nome</mat-label>
+            <input matInput formControlName="nome" />
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Cognome</mat-label>
+            <input matInput formControlName="cognome" />
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="email" />
+            <mat-error *ngIf="emailError">{{ emailError }}</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="w-100 mb-3 hour">
+            <mat-label>Fascia Oraria Inizio</mat-label>
+            <input matInput formControlName="fasciaOrariaInizio" type="time" />
+            <mat-error
+              *ngIf="
+                profileForm.get('fasciaOrariaInizio')?.hasError('required')
+              "
+            >
+              L'orario di inizio è obbligatorio.
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="w-100 mb-3 hour">
+            <mat-label>Fascia Oraria Fine</mat-label>
+            <input matInput formControlName="fasciaOrariaFine" type="time" />
+            <mat-error
+              *ngIf="profileForm.get('fasciaOrariaFine')?.hasError('required')"
+            >
+              L'orario di fine è obbligatorio.
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>WhatsApp</mat-label>
+            <input matInput formControlName="whatsapp" />
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="w-100 mb-3">
+            <mat-label>Seleziona Materie e Livelli</mat-label>
+            <mat-select
+              (selectionChange)="addMateria($event.value)"
+              [disabled]="!isEditing"
+            >
+              <mat-option
+                *ngFor="let materia of materieDisponibili"
+                [value]="materia"
+              >
+                {{ materia.nome }} - Livello: {{ materia.livello }}
+              </mat-option>
+              <mat-option [value]="'altro'" (click)="onSelectAltro()">
+                Altro
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field
+            *ngIf="isMateriaCustom"
+            appearance="fill"
+            class="w-100 mb-3"
+          >
+            <mat-label>Nome della materia personalizzata</mat-label>
+            <input
+              matInput
+              formControlName="materiaCustomName"
+              placeholder="Es. Programmazione C++"
+            />
+          </mat-form-field>
+
+          <mat-form-field
+            *ngIf="isMateriaCustom"
+            appearance="fill"
+            class="w-100 mb-3"
+          >
+            <mat-label>Livello</mat-label>
+            <mat-select formControlName="materiaCustomLevel">
+              <mat-option
+                *ngFor="let livello of livelliMaterie"
+                [value]="livello"
+              >
+                {{ livello }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <button
+            *ngIf="isMateriaCustom"
+            mat-button
+            color="primary"
+            type="button"
+            (click)="confermaMateriaPersonalizzata()"
+          >
+            Aggiungi materia
+          </button>
+
+          <div class="table-container">
+            <div class="title-table-container">
+              <h3>Materie Selezionate</h3>
+              <img
+                src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExNHJmemk2dG5hcGZtcXFxc3NlMXVkODdkYmVjcG14bTViOHNwbTUyZSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/cQ23bDqzbWbh240xQq/giphy.gif"
+                alt="gif-animata"
+                height="50px"
+              />
+            </div>
+            <table class="materie-table" *ngIf="materieFormArray.length > 0">
+              <thead>
+                <tr>
+                  <th>Materia</th>
+                  <th>Livello</th>
+                  <th>Azioni</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  *ngFor="
+                    let materia of materieFormArray.controls;
+                    let i = index
+                  "
+                >
+                  <td>{{ materia.value.nome }}</td>
+                  <td>{{ materia.value.livello }}</td>
+                  <td>
+                    <button
+                      mat-icon-button
+                      color="warn"
+                      (click)="removeMateria(i)"
+                      [disabled]="!isEditing"
+                    >
+                      <mat-icon>delete</mat-icon>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="buttons">
+            <button
+              class="custom-button"
+              id="modifica"
+              mat-button
+              color="primary"
+              (click)="toggleEdit()"
+            >
+              <mat-icon>{{ isEditing ? "close" : "edit" }}</mat-icon>
+              {{ isEditing ? "Annulla" : "Modifica" }}
+            </button>
+            <button
+              class="custom-button"
+              mat-raised-button
+              color="accent"
+              (click)="saveProfile()"
+              *ngIf="isEditing"
+            >
+              Salva
+            </button>
+          </div>
+        </form>
+      </ng-container>
+
+      <p *ngIf="!profileForm">Caricamento profilo...</p>
+
+      <div class="avatar-upload-container">
+        <h2>Cambia Avatar</h2>
+
+        <input
+          type="file"
+          #fileInput
+          (change)="onFileSelected($event)"
+          hidden
+        />
+        <button
+          class="custom-button"
+          mat-raised-button
+          color="primary"
+          (click)="fileInput.click()"
+        >
+          Seleziona immagine
+        </button>
+
+        <button
+          class="custom-button"
+          mat-raised-button
+          color="warn"
+          (click)="cancelSelection()"
+          *ngIf="selectedFile || selectedAvatarPreview"
+        >
+          Annulla
+        </button>
+
+        <div *ngIf="selectedAvatarPreview" class="avatar-preview-container">
+          <img
+            [src]="selectedAvatarPreview"
+            alt="Anteprima avatar"
+            class="avatar-preview"
+          />
+        </div>
+
+        <button
+          class="custom-button"
+          mat-raised-button
+          color="accent"
+          (click)="uploadAvatar(user.id)"
+          [disabled]="!selectedFile"
+        >
+          Carica Avatar
+        </button>
+      </div>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

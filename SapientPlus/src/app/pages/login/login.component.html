@@ -1,0 +1,79 @@
+<app-header></app-header>
+
+<section>
+  <div class="welcome-header">
+    <h1 matTypography="headline-large" class="title">Sapient+</h1>
+  </div>
+
+  <form [formGroup]="loginForm" (ngSubmit)="login()">
+    <div class="gif-container" [ngClass]="{ hidden: !isDefaultGifVisible }">
+      <img
+        src="https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExMmYzbmwxdWJ2NGtmcnZqMW1zdHc2am1ueGsxNTluOThpZmRibGpqOSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/NuGdAU27o68XG8Wib0/giphy.gif"
+        alt="GIF animata"
+        class="gif-login"
+      />
+    </div>
+    <div
+      class="gif-container password"
+      [ngClass]="{ visible: isPasswordGifVisible }"
+    >
+      <img
+        src="../../../assets/img/ezgif.com-effects.gif"
+        alt="GIF animata"
+        class="gif-login"
+      />
+    </div>
+    <mat-form-field appearance="fill" class="w-100 mb-3">
+      <mat-label>Username</mat-label>
+      <input matInput formControlName="username" type="text" />
+      <mat-error *ngIf="loginForm.get('username')?.hasError('required')">
+        Campo obbligatorio.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="w-100 mb-3">
+      <mat-label>Password</mat-label>
+      <input
+        matInput
+        formControlName="password"
+        [type]="hidePassword ? 'password' : 'text'"
+        (focus)="showPasswordGif()"
+        (blur)="hidePasswordGif()"
+      />
+      <button
+        mat-icon-button
+        matSuffix
+        (click)="hidePassword = !hidePassword"
+        [attr.aria-label]="'Mostra/Nascondi password'"
+        type="button"
+      >
+        <mat-icon class="custom-icon">{{
+          hidePassword ? "visibility_off" : "visibility"
+        }}</mat-icon>
+      </button>
+
+      <mat-error *ngIf="loginForm.get('password')?.hasError('required')">
+        La password è obbligatoria.
+      </mat-error>
+    </mat-form-field>
+
+    <div *ngIf="loginError" class="alert alert-danger">
+      {{ loginError }}
+    </div>
+
+    <div class="sign-up-link">
+      <p>Non sei ancora registrato?</p>
+      <a routerLink="">Sign-up</a>
+    </div>
+
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit"
+      class="w-100 login"
+      [disabled]="loginForm.invalid"
+    >
+      Log-in
+    </button>
+  </form>
+</section>

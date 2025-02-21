@@ -1,0 +1,218 @@
+<mat-sidenav-container
+  class="sidenav-container"
+  [ngClass]="{ 'dark-mode-bg': isDarkMode }"
+>
+  <mat-sidenav #sidenav mode="side" opened class="sidenav">
+    <mat-toolbar class="h3">
+      <h3>Sapient+</h3>
+    </mat-toolbar>
+    <mat-nav-list>
+      <button mat-list-item routerLink="/profile">
+        <mat-icon>person</mat-icon> Profilo
+      </button>
+      <button mat-list-item routerLink="/settings">
+        <mat-icon>settings</mat-icon> Impostazioni
+      </button>
+      <button mat-list-item (click)="logout()">
+        <mat-icon>logout</mat-icon> Logout
+      </button>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content class="content">
+    <mat-toolbar color="primary" id="header" style="color: #e0f7fa">
+      <button mat-icon-button (click)="sidenav.toggle()">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span class="title">Home</span>
+    </mat-toolbar>
+
+    <div class="mentors-container">
+      <ng-container *ngIf="mentors.length > 0; else noMentors">
+        <div *ngFor="let mentor of mentors" class="mentor-card">
+          <mat-card class="card">
+            <div class="flex">
+              <mat-card-header>
+                <div class="mentor-avatar">
+                  <img
+                    *ngIf="mentor.avatar; else defaultAvatar"
+                    [src]="mentor.avatar.path"
+                    alt="Avatar"
+                  />
+                  <ng-template #defaultAvatar>
+                    <img src="assets/default-avatar.png" alt="Default Avatar" />
+                  </ng-template>
+                </div>
+                <mat-card-title>{{ mentor.username }}</mat-card-title>
+              </mat-card-header>
+            </div>
+            <div class="flex">
+              <mat-card-content>
+                <p class="materie">
+                  <img
+                    width="40px"
+                    src="https://media1.giphy.com/media/v1.Y2lkPTc5MGI3NjExMzl6ZWtnZHBmYWo3MnZ0bjU0djc3cGw3MHI1NXVzMWdub21mMzFsbiZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/JJe6fiqgaVYRpvbMMW/giphy.gif"
+                    alt="gif-materie"
+                  />
+                </p>
+                <div class="materie-list">
+                  <div
+                    *ngFor="let materia of mentor.materie"
+                    class="materia-item"
+                  >
+                    <p><strong>Materia:</strong> {{ materia.nome }}</p>
+                    <p><strong>Livello:</strong> {{ materia.livello }}</p>
+                  </div>
+                </div>
+                <p class="schedule">
+                  <mat-icon>schedule</mat-icon>
+                  <span class="font-size">fascia oraria preferita:</span>
+                  {{ mentor.fasciaOrariaInizio }} -
+                  {{ mentor.fasciaOrariaFine }}
+                </p>
+
+                <div
+                  class="recensione"
+                  (click)="apriDialogRecensione(mentor.id)"
+                >
+                  <p class="recensioni-titolo">Media Recensioni</p>
+
+                  <div
+                    matTooltip="Clicca per lasciare una recensione!"
+                    matTooltipPosition="above"
+                    class="clickable stelline"
+                    *ngIf="recensioniCaricate; else caricamento"
+                  >
+                    <ng-container
+                      *ngIf="mediaRecensioni[mentor.id] > 0; else noRecensioni"
+                    >
+                      <mat-icon
+                        *ngFor="
+                          let stella of getStelleArray(
+                            mediaRecensioni[mentor.id]
+                          )
+                        "
+                        class="clickable"
+                      >
+                        {{ stella }}
+                      </mat-icon>
+                    </ng-container>
+                    <ng-template #noRecensioni>
+                      <span class="n-r">N/R</span>
+                    </ng-template>
+                  </div>
+
+                  <ng-template #caricamento>
+                    <span class="loading-text">Caricamento...</span>
+                  </ng-template>
+                </div>
+              </mat-card-content>
+            </div>
+            <div class="flex">
+              <button mat-icon-button (click)="toggleFavorite(mentor)">
+                <mat-icon [ngClass]="{ favorite: isFavorite(mentor) }">
+                  {{ isFavorite(mentor) ? "star" : "star_border" }}
+                </mat-icon>
+              </button>
+              <mat-card-actions>
+                <a
+                  mat-button
+                  color="primary"
+                  [routerLink]="['/mentor-profile-view', mentor.id]"
+                  class="links-card"
+                >
+                  <mat-icon>person</mat-icon> Profilo
+                </a>
+              </mat-card-actions>
+              <mat-card-actions>
+                <a
+                  mat-button
+                  color="primary"
+                  [href]="
+                    'https://wa.me/' +
+                    mentor.whatsapp +
+                    '?text=Ciao%20' +
+                    mentor.nome +
+                    ',%20sono%20interessato%20alle%20tue%20lezioni!'
+                  "
+                  target="_blank"
+                  class="links-card"
+                >
+                  <img
+                    src="https://1.bp.blogspot.com/-pGsRrouvWAI/XkVHyz-xkyI/AAAAAAAAJcg/BLkwzlGjYjg2ekiWS1EXifycdnFoZbXggCLcBGAsYHQ/s1600/Whatsapp%2BIcon%2BLogo.png"
+                    alt=""
+                    width="40px"
+                  />
+                  <p>WhatsApp</p>
+                </a>
+              </mat-card-actions>
+            </div>
+          </mat-card>
+        </div>
+      </ng-container>
+
+      <ng-template #noMentors>
+        <p class="no-mentors">
+          <mat-icon>info</mat-icon> Nessun mentor disponibile al momento.
+        </p>
+      </ng-template>
+    </div>
+    <div class="fav-button">
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="showFavorites = !showFavorites"
+      >
+        {{ showFavorites ? "Nascondi Preferiti" : "I tuoi Preferiti" }}
+      </button>
+    </div>
+
+    <div class="preferiti-container" *ngIf="showFavorites">
+      <h3>I tuoi Preferiti</h3>
+
+      <table class="materie-table" *ngIf="favorites.length > 0">
+        <thead>
+          <tr>
+            <th>Username</th>
+            <th>Orari</th>
+            <th>WhatsApp</th>
+            <th>Azioni</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let mentor of favorites">
+            <td>{{ mentor.username }}</td>
+            <td>
+              {{ mentor.fasciaOrariaInizio }} - {{ mentor.fasciaOrariaFine }}
+            </td>
+            <td>
+              <a
+                [href]="'https://wa.me/' + mentor.whatsapp"
+                target="_blank"
+                class="whatsapp-link"
+              >
+                <img
+                  src="https://1.bp.blogspot.com/-pGsRrouvWAI/XkVHyz-xkyI/AAAAAAAAJcg/BLkwzlGjYjg2ekiWS1EXifycdnFoZbXggCLcBGAsYHQ/s1600/Whatsapp%2BIcon%2BLogo.png"
+                  alt="WhatsApp"
+                />
+              </a>
+            </td>
+            <td>
+              <button
+                mat-icon-button
+                color="warn"
+                (click)="toggleFavorite(mentor)"
+              >
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p class="no-mentors" *ngIf="favorites.length === 0">
+        <mat-icon>info</mat-icon> Nessun preferito salvato.
+      </p>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

@@ -1,0 +1,147 @@
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #sidenav mode="side" opened class="sidenav">
+    <mat-toolbar color="primary">
+      <h3>Sapient+</h3>
+    </mat-toolbar>
+    <mat-nav-list>
+      <button mat-list-item routerLink="/student-home">
+        <mat-icon>person</mat-icon> Home
+      </button>
+      <button mat-list-item routerLink="/settings">
+        <mat-icon>settings</mat-icon> Impostazioni
+      </button>
+      <button mat-list-item (click)="logout()">
+        <mat-icon>logout</mat-icon> Logout
+      </button>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content class="content">
+    <mat-toolbar color="primary" id="header">
+      <button mat-icon-button (click)="sidenav.toggle()">
+        <mat-icon>menu</mat-icon>
+      </button>
+      <span class="title">Profilo</span>
+    </mat-toolbar>
+
+    <div class="profile-container">
+      <h2 id="primo-h2">Profilo Utente</h2>
+      <button
+        mat-raised-button
+        color="primary"
+        class="custom-button"
+        (click)="update()"
+      >
+        <mat-icon>check_circle</mat-icon> Update
+      </button>
+
+      <ng-container *ngIf="isUpdate">
+        <form *ngIf="profileForm" [formGroup]="profileForm">
+          <mat-form-field appearance="fill">
+            <mat-label>Username</mat-label>
+            <input matInput formControlName="username" />
+            <mat-error *ngIf="profileForm.get('username')?.hasError('unique')">
+              {{ usernameError }}
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Password</mat-label>
+            <input matInput type="password" formControlName="password" />
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Nome</mat-label>
+            <input matInput formControlName="nome" />
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Cognome</mat-label>
+            <input matInput formControlName="cognome" />
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="email" />
+            <mat-error *ngIf="emailError">{{ emailError }}</mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill">
+            <mat-label>WhatsApp</mat-label>
+            <input matInput formControlName="whatsapp" />
+          </mat-form-field>
+
+          <div class="buttons">
+            <button
+              class="custom-button"
+              id="modifica"
+              mat-button
+              color="primary"
+              (click)="toggleEdit()"
+            >
+              {{ isEditing ? "Annulla" : "Modifica" }}
+            </button>
+            <button
+              class="custom-button"
+              mat-raised-button
+              color="accent"
+              (click)="saveProfile()"
+              *ngIf="isEditing"
+            >
+              Salva
+            </button>
+          </div>
+        </form>
+      </ng-container>
+
+      <p *ngIf="!profileForm">Caricamento profilo...</p>
+
+      <div class="avatar-upload-container">
+        <h2>Cambia Avatar</h2>
+
+        <input
+          type="file"
+          #fileInput
+          (change)="onFileSelected($event)"
+          hidden
+        />
+        <button
+          class="custom-button"
+          mat-raised-button
+          color="primary"
+          (click)="fileInput.click()"
+        >
+          Seleziona immagine
+        </button>
+
+        <button
+          class="custom-button"
+          mat-raised-button
+          color="warn"
+          (click)="cancelSelection()"
+          *ngIf="selectedFile || selectedAvatarPreview"
+        >
+          Annulla
+        </button>
+
+        <div *ngIf="selectedAvatarPreview" class="avatar-preview-container">
+          <img
+            [src]="selectedAvatarPreview"
+            alt="Anteprima avatar"
+            class="avatar-preview"
+          />
+        </div>
+
+        <button
+          class="custom-button"
+          mat-raised-button
+          color="accent"
+          (click)="uploadAvatar(user.id)"
+          [disabled]="!selectedFile"
+        >
+          Carica Avatar
+        </button>
+      </div>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

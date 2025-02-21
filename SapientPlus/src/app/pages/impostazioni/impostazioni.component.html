@@ -1,0 +1,75 @@
+<mat-sidenav-container
+  #sidenavContainer
+  class="sidenav-container"
+  [ngClass]="{ 'dark-mode-bg': isDarkMode }"
+>
+  <mat-sidenav #sidenav mode="side" opened class="sidenav">
+    <mat-toolbar color="primary" style="background-color: #006064">
+      <h3 style="color: #e0f7fa; text-align: center">Sapient+</h3>
+    </mat-toolbar>
+    <mat-nav-list>
+      <button class="margin-0" mat-list-item routerLink="/student-home">
+        <mat-icon>person</mat-icon> Home
+      </button>
+      <button class="margin-0" mat-list-item routerLink="/profile">
+        <mat-icon>person</mat-icon> Profilo
+      </button>
+      <button class="margin-0" mat-list-item (click)="logout()">
+        <mat-icon>logout</mat-icon> Logout
+      </button>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content class="content">
+    <mat-toolbar color="primary" id="header">
+      <div class="align-item">
+        <button
+          mat-icon-button
+          (click)="sidenav.toggle()"
+          style="margin-top: 0"
+        >
+          <mat-icon>menu</mat-icon>
+        </button>
+        <span class="title">Impostazioni</span>
+      </div>
+    </mat-toolbar>
+
+    <div class="settings-container">
+      <h2>Aspetto</h2>
+
+      <mat-slide-toggle
+        [checked]="isDarkMode"
+        (change)="onDarkModeChange($event.checked)"
+      >
+        <span class="flex">
+          <mat-icon
+            [ngClass]="{
+              'dark-mode-icon': isDarkMode,
+              'light-mode-icon': !isDarkMode
+            }"
+          >
+            dark_mode
+          </mat-icon>
+          Modalità Scura
+        </span>
+      </mat-slide-toggle>
+
+      <mat-slide-toggle
+        [checked]="reduceMotion"
+        (change)="onReduceMotionChange($event.checked)"
+      >
+        <span class="flex">
+          <mat-icon
+            [ngClass]="{
+              'dark-mode-icon': isDarkMode,
+              'light-mode-icon': !isDarkMode
+            }"
+          >
+            motion_photos_off
+          </mat-icon>
+          Disattiva Animazioni
+        </span>
+      </mat-slide-toggle>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

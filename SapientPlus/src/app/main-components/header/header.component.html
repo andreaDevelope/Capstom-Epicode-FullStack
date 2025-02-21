@@ -1,0 +1,9 @@
+<nav>
+  <mat-tab-group
+    [(selectedIndex)]="selectedIndex"
+    (selectedIndexChange)="navigate($event)"
+  >
+    <mat-tab label="Welcome"></mat-tab>
+    <mat-tab label="Log-in"></mat-tab>
+  </mat-tab-group>
+</nav>

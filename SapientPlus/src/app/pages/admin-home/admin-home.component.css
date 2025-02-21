@@ -1,0 +1,149 @@
+.sidenav-container {
+  height: 100vh;
+  display: flex;
+  background-color: #e0f7fa;
+}
+
+.sidenav {
+  width: 250px;
+  background: #1e1e2d;
+  color: #f5f5f5;
+  transition: transform 0.3s ease-in-out;
+}
+
+#header {
+  border-radius: 12px;
+}
+
+h2 {
+  text-align: center;
+  margin-top: 4rem;
+}
+
+#primo-h2 {
+  margin-top: 1rem;
+}
+
+.mat-mdc-nav-list .mat-mdc-list-item {
+  background-color: #18ffff;
+  margin: 0;
+  border-radius: 12px;
+}
+
+.mat-nav-list button {
+  width: 100%;
+  text-align: left;
+  color: #f5f5f5;
+  padding: 10px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+.mat-nav-list button:hover {
+  background-color: rgba(255, 255, 255, 0.2);
+  transform: translateX(5px);
+}
+
+.content {
+  flex-grow: 1;
+  padding: 16px;
+}
+
+img {
+  width: 100%;
+  margin-block: 1rem;
+}
+
+button {
+  margin-inline: 0.5rem;
+  padding-inline: 0.5rem;
+  padding-block: 0.2rem;
+}
+
+.title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-left: 16px;
+  opacity: 0;
+  animation: fadeIn 0.5s ease-in-out forwards;
+}
+
+mat-error {
+  color: red !important;
+  font-size: 14px;
+  height: 1rem;
+  display: block !important;
+}
+
+.profile-container {
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  margin: 20px auto;
+  transform: translateY(20px);
+  opacity: 0;
+  animation: slideUp 0.5s ease-out 0.3s forwards;
+  background-color: #b2ebf2;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+.custom-button {
+  background-color: #18ffff;
+  color: black;
+  font-size: 16px;
+  font-weight: bold;
+  padding: 12px 24px;
+  margin-inline: auto;
+  border-radius: 8px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease-in-out;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: none;
+  margin-bottom: 1rem;
+}
+.custom-button:hover {
+  box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.3);
+  transform: scale(1.05);
+}
+.custom-button:active {
+  transform: scale(0.98);
+}
+.custom-button mat-icon {
+  font-size: 20px;
+}
+
+#modifica {
+  color: black;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}/*# sourceMappingURL=admin-home.component.css.map */

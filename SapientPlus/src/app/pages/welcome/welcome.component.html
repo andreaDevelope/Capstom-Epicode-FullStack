@@ -1,0 +1,96 @@
+<app-header></app-header>
+<section class="welcome-container">
+  <div class="overlay"></div>
+
+  <div class="sfondo">
+    <div class="title-group">
+      <h1 matTypography="headline-large" class="title">Sapient+</h1>
+      <p matTypography="body-medium" class="description">
+        Il sapere a portata di app
+      </p>
+    </div>
+  </div>
+
+  <section class="vantaggi">
+    <div>
+      <h2>Vantaggi</h2>
+      <p class="sotto-titolo-vantaggi">Perché scegliere Sapient+</p>
+    </div>
+
+    <div class="presentazione" #presentazioneEl>
+      <div class="border-radius sezione1"></div>
+      <p>
+        Sapient+ è una piattaforma di mentoring innovativa che semplifica il
+        processo di apprendimento.
+        <strong>Gli studenti possono registrarsi gratuitamente</strong> e
+        accedere a una rete di mentor qualificati, pronti a fornire supporto
+        personalizzato. Grazie a un
+        <strong>sistema di ricerca intuitivo</strong>, ogni studente può trovare
+        il mentor più adatto alle proprie esigenze, scegliendo tra diverse
+        materie e livelli di preparazione.
+      </p>
+      <h3>LE SORPRESE NON FINISCONO QUI</h3>
+      <p>
+        Molti mentor potranno mettere a disposizione un primo colloquio gratuito
+        conoscitivo di massimo 30 minuti per capire le esigenze dello studente e
+        la sua preparazione ed eventuali lacune. Questo perché potranno
+        prepararsi lezioni ed esercizi mirati già dalla prima vera lezione.
+      </p>
+    </div>
+
+    <div class="presentazione" #presentazioneEl>
+      <div class="border-radius sezione2"></div>
+      <h3>UNA PIATTAFORMA PER TUTTI</h3>
+      <p>
+        <strong
+          >Una piattaforma per tutti, senza limiti di età o livello
+          accademico!</strong
+        >
+        Sapient+ è pensata per <strong>chiunque voglia imparare</strong>,
+        indipendentemente dal livello di istruzione. Che tu sia uno
+        <strong
+          >studente delle elementari, delle medie, delle superiori o
+          dell’università</strong
+        >, troverai sempre un mentor in grado di supportarti. Offriamo anche
+        tutor per
+        <strong
+          >corsi di formazione professionale, esami di certificazione e
+          aggiornamento lavorativo</strong
+        >, rendendo Sapient+ il punto di riferimento per chi vuole migliorarsi
+        ogni giorno.
+      </p>
+    </div>
+
+    <div class="presentazione" #presentazioneEl>
+      <div class="border-radius sezione3"></div>
+      <h3>FLESSIBILITÀ E ACCESSIBILITÀ</h3>
+      <p>
+        Grazie a Sapient+, <strong>puoi imparare quando e dove vuoi</strong>. Le
+        lezioni si svolgono in modalità online o in presenza, a seconda delle
+        disponibilità del mentor e delle preferenze dello studente.
+      </p>
+    </div>
+
+    <div class="presentazione" #presentazioneEl>
+      <div class="border-radius sezione4"></div>
+      <h3>INSEGNA SU SAPIENT+ SENZA COMMISSIONI</h3>
+      <p>
+        Sei un docente, un tutor o un esperto in una materia? Con Sapient+ puoi
+        condividere il tuo sapere, trovare nuovi studenti e gestire il tuo
+        lavoro in totale autonomia. Con un piccolo abbonamento annuale di soli
+        20€, ottieni visibilità sulla piattaforma e ricevi il 100% del compenso
+        delle tue lezioni, tutto senza commissioni! Imposta il tuo calendario,
+        decidi le tariffe e inizia a insegnare subito. <br />
+        <strong>Più libertà, più guadagni, più opportunità!</strong>
+      </p>
+    </div>
+  </section>
+
+  <button
+    mat-raised-button
+    class="register-btn animated-button"
+    (click)="openRegisterDialog()"
+  >
+    Registrati
+  </button>
+</section>
